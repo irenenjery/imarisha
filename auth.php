@@ -29,11 +29,15 @@ if ( substr_compare(substr($username, 0, 1), '@', 0) == 0 ) {
 
 //username/email doesn't exist or password doesn't match
 if ( $mismatch  ) {
-	redirect('login.php', 'auth_fail=match_error');
+	$redirect_to = 'login.php';
+	$urlparams = 'auth_fail=match_error';
 } else {
-	echo 'client/coach homepage';
+	session_start();
+	$redirect_to = 'member-home.php';
+	$urlparams = 'user_id='.$user_id;
+	$_SESSION['user_id'] = $user_id;
 }
 
-
+redirect($redirect_to, $urlparams);
 mysqli_close($conn);
 ?>
