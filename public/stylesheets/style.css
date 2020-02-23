@@ -218,3 +218,16 @@ form#sign-in input {
 	width: 55%;
 	margin: auto;
 }
+li.prog {
+	width: 90%;
+	margin: 10px 0;
+}
+li.prog h4 {
+	position: relative;
+	text-transform: capitalize;
+}
+li.prog input[type='radio'] {
+	position: absolute;
+	top: 10px;
+	left: 15px;
+}
