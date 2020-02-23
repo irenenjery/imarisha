@@ -55,6 +55,7 @@ function createviewClients($conn)
       c.client_email AS client_email, 
       c.client_username AS client_username, 
       c.client_name AS client_name, 
+      p.prog_id AS client_prog_id,
       p.prog_title AS client_sub_prog,
       s.sub_startdate AS sub_startdate,
       s.sub_enddate AS sub_enddate
@@ -63,7 +64,7 @@ function createviewClients($conn)
     ON s.client_id = c.client_id
     LEFT JOIN programs AS p
     ON s.prog_id = p.prog_id
-    ORDER BY client_sub_prog";
+    ORDER BY client_prog_id";
 
 	if (mysqli_query($conn, $sql_create_clients_view)) {
     echo "Clients view created successfully";
@@ -239,7 +240,8 @@ function getPrograms($conn, $condition=true)
 
 	if ($result && mysqli_num_rows($result) > 0) {
 	  while($row = mysqli_fetch_assoc($result)) {
-  		array_push($programs_data, $row);
+	  	$programs_data[$row['prog_id']] = $row;
+  		// array_push($programs_data, $row);
 	  }
 	}
 	return $programs_data;
