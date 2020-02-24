@@ -139,9 +139,9 @@ function getAuthCoach($conn, $condition)
 	return $coach_auth_data;
 }
 /**
- Returns a two-dimensional array of registered clients filtered by a specified condition.
+ Returns a two-dimensional associative array of registered clients filtered by a specified condition.
  
- The array is indexed and each indexed member is an
+ The outer array is indexed by `client_id` and each indexed member is an
  associative array, $client, containing:
  - $client['client_id']
  - $client['client_name']
@@ -167,9 +167,9 @@ function getClients($conn, $condition=true)
 	return $clients_data;
 }
 /**
- Returns a two-dimensional array of registered coaches filtered by a specified condition.
+ Returns a two-dimensional associative array of registered coaches filtered by a specified condition.
  
- The array is indexed and each indexed member is an
+ The outer array is indexed by `coach_id` and each indexed member is an
  associative array, $coach, containing:
  - $coach['coach_id']
  - $coach['coach_name']
@@ -193,9 +193,9 @@ function getCoaches($conn, $condition=true)
 	return $coaches_data;
 }
 /**
- Returns a two-dimensional array of roles filtered by a specified condition.
+ Returns a two-dimensional associative array of roles filtered by a specified condition.
  
- The array is indexed and each indexed member is an
+ The outer array is indexed by `role_id` and each indexed member is an
  associative array, $role, containing:
  - $role['role_id']
  - $role['role_title']
@@ -218,9 +218,9 @@ function getRoles($conn, $condition=true)
 	return $roles_data;
 }
 /**
- Returns a two-dimensional array of programs filtered by a specified condition.
+ Returns a two-dimensional associative array of programs filtered by a specified condition.
  
- The array is indexed and each indexed member is an
+ The outer array is indexed by `prog_id` and each indexed member is an
  associative array, $program, containing:
  - $program['prog_id']
  - $program['prog_title']
@@ -241,7 +241,6 @@ function getPrograms($conn, $condition=true)
 	if ($result && mysqli_num_rows($result) > 0) {
 	  while($row = mysqli_fetch_assoc($result)) {
 	  	$programs_data[$row['prog_id']] = $row;
-  		// array_push($programs_data, $row);
 	  }
 	}
 	return $programs_data;
