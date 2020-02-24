@@ -1,16 +1,13 @@
 <?php 
 session_start();
-
-$user_id = $_SESSION['user_id'];
+$user = $_SESSION['user'];
 ?>
 
 <?php require 'includes/db/connectdb_imarisha.php'; ?>
 <?php require 'includes/db/db_functions.php' ?>
 
 <?php 
-$user = getClients($conn, "client_id=".$user_id)[$user_id];
 $timetable_data = getTimetable($conn);
-
 mysqli_close($conn);
 ?>
 
@@ -36,7 +33,7 @@ mysqli_close($conn);
         <?php echo $user['client_username']; ?>
       </span>
       <div class="w3-padding" style="display: inline-block;letter-spacing: normal;font-size: 1.4em;">
-        <a href="index.php" title="Logout">
+        <a href="logout.php" title="Logout">
           <i class="lnr lnr-exit"> </i>
         </a> &nbsp;&nbsp;
         <a href="member-settings.php" title="Account Settings">

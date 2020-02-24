@@ -14,7 +14,7 @@ $mismatch = true;
 
 // Trainer login; username starts with @
 if ( substr_compare(substr($username, 0, 1), '@', 0) == 0 ) {
-	$user = getAuthCoach($conn, "coach_username='".$username."' OR coach_email='".$username."'");
+	$user = getAuthCoach($conn, "coach_username='".$username."'");
   if ( password_verify($pass, $user['coach_pass']) ) {//password matches
 		$mismatch = false;
 		$user_id = $user['coach_id'];
@@ -35,7 +35,7 @@ if ( $mismatch  ) {
 	session_start();
 	$redirect_to = 'member-home.php';
 	$urlparams = 'user_id='.$user_id;
-	$_SESSION['user_id'] = $user_id;
+	$_SESSION['user'] = getClients($conn, "client_id=".$user_id)[$user_id];
 }
 
 redirect($redirect_to, $urlparams);
