@@ -212,7 +212,7 @@ function getRoles($conn, $condition=true)
 
 	if ($result && mysqli_num_rows($result) > 0) {
     while($row = mysqli_fetch_assoc($result)) {
-      array_push($roles_data, $row);
+      $roles_data[$row['role_id']] = $row;
     }
 	}
 	return $roles_data;
