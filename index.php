@@ -47,10 +47,10 @@ mysqli_close($conn);
       Featured Programs
     </h2>
     <div class="w3-row-padding" id="program-list">
-      <?php foreach ($programs_data as $key => $program): ?>
-        <article class="program w3-col l4 m6" id=<?php echo "program-".$program['prog_id']; ?>>
+      <?php foreach ($programs_data as $prog_id => $program): ?>
+        <article class="program w3-col l4 m6" id=<?php echo "program-".$prog_id; ?>>
           <div class="program-content w3-hover-shadow w3-display-container">
-            <a href=<?php echo "member-signup.php?program_id=".$program['prog_id'];?>>
+            <a href=<?php echo "member-signup.php?program_id=".$prog_id;?>>
               <h3 class="program-title w3-center w3-display-topmiddle w3-padding-8">
                 <span class="program-name"><?php echo $program['prog_title']; ?></span>
               </h3>
@@ -72,8 +72,9 @@ mysqli_close($conn);
       OUR COACHES
     </h2>
     <div id="trainer-list" class="w3-row-padding">
-      <?php for ($i=0; $i<4 && $i<count($coaches_data); $i++): ?>
-        <?php $coach=$coaches_data[$i]; ?>
+      <?php $i = 0; ?>
+      <?php foreach ($coaches_data as $coach_id => $coach): ?>
+        <?php if ($i++ >= 4) break; ?>
         <article class="trainer w3-col l6 w3-padding-0">
           <div class="trainer-content w3-row">
             <div class="trainer-img w3-col l6 w3-display-container">
@@ -97,7 +98,7 @@ mysqli_close($conn);
             </div>
           </div>
         </article><!-- article.trainer -->  
-      <?php endfor ?>
+      <?php endforeach ?>
     </div><!-- div#trainer-list -->
     <div id="become-trainer" class="w3-center w3-padding w3-large">
       <a href="#" class="w3-btn w3-bronze w3-round" style="padding: 20px;width: 60%;">Become a trainer</a>
