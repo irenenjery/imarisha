@@ -1,15 +1,15 @@
+<?php require 'includes/helper_functions.php' ?>
 <?php 
 session_start();
+date_default_timezone_set("Africa/Nairobi");
 $user = $_SESSION['user'];
+$sub_active = $_SESSION['sub_active'] = strtotime("now") < strtotime($user['sub_enddate']);
+$sub_startdate = $_SESSION['sub_startdate'] = format_sqldate($user['sub_startdate']);
+$sub_enddate = $_SESSION['sub_enddate'] = format_sqldate($user['sub_enddate']);
 ?>
 
-<?php require 'includes/db/connectdb_imarisha.php'; ?>
-<?php require 'includes/db/db_functions.php' ?>
-
-<?php 
-$timetable_data = getTimetable($conn);
-mysqli_close($conn);
-?>
+<!-- db data -->
+<?php require 'includes/db/getall_timetable.php' ?>
 
 <!-- HTML5 boilerplate -->
 <?php require 'includes/views/head.php'; ?>
@@ -30,7 +30,7 @@ mysqli_close($conn);
 
     <section id="profile" class="w3-right w3-display-right">
       <span style="font-size: 1.3em;vertical-align: 10%">
-        <?php echo $user['client_username']; ?>
+        <a href="member-home.php"><?php echo $user['client_username']; ?></a>
       </span>
       <div class="w3-padding" style="display: inline-block;letter-spacing: normal;font-size: 1.4em;">
         <a href="logout.php" title="Logout">
@@ -45,26 +45,22 @@ mysqli_close($conn);
 </section><!-- section.w3-top -->
 
 <!-- Header -->
-<header id="member_home" class="w3-display-container w3-content w3-center" style="max-width: 1500px;height: 250px;">
+<header id="member_home" class="w3-display-container w3-content w3-center" style="max-width: 1500px;height: 200px;margin-top: 70px;">
   <div id="welcome" class="w3-display-middle w3-margin-top">
     <h1 class="w3-xxlarge">
+    	<a href="member-settings.php" style="text-decoration:none;">
       Program <span class="w3-border w3-border-black w3-padding" style="text-transform: capitalize;">
       	<?php echo $user['client_sub_prog']; ?>
       </span><br>
       <?php date_default_timezone_set("Africa/Nairobi"); ?>
-      <?php if ( strtotime("now") < strtotime($user['sub_enddate']) ): ?>
+      <?php if ( $sub_active ): ?>
 	      <sub class="w3-text-green">
-	      	Active: ends <?php echo $user['sub_enddate']; ?><br>
+	      	Active: ends <?php echo $sub_enddate; ?><br>
 	      </sub>
-      <?php endif ?>
-      <?php if ( strtotime("now") >= strtotime($user['sub_enddate']) ): ?>
-      	<sub class="w3-text-red">Inactive since <?php echo $user['sub_enddate'];?></sub><br>
+      <?php else: ?>
+      	<sub class="w3-text-red">Inactive since <?php echo $sub_enddate; ?></sub><br>
     	<?php endif ?>
-      
-			<?php
-			
-			// echo "The time is " . date($user['sub_enddate']);
-			?>
+    	</a>
     </h1>
   </div><!-- div#welcome -->
 </header><!-- header#member_home -->
@@ -75,7 +71,7 @@ mysqli_close($conn);
   <!-- Schedule Section -->  
   <section class="service w3-container w3-padding-16" id="timetable">
     <h2 class="service-title w3-padding-12 w3-center">
-      YOUR SCHEDULE
+      YOUR PROGRAM SCHEDULE
     </h2>
     <div class="w3-row-padding" id="days-list">
       <?php require 'includes/views/function_generate_tt.php' ?>
