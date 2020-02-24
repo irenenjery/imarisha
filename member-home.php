@@ -30,7 +30,12 @@ $sub_enddate = $_SESSION['sub_enddate'] = format_sqldate($user['sub_enddate']);
 
     <section id="profile" class="w3-right w3-display-right">
       <span style="font-size: 1.3em;vertical-align: 10%">
-        <a href="member-home.php"><?php echo $user['client_username']; ?></a>
+        <a href="member-home.php">
+        	<?php if ( isset($_GET['welcome']) ): ?>
+        		<span>Welcome</span>
+        	<?php endif ?>
+        	<?php echo $user['client_username']; ?>
+        </a>
       </span>
       <div class="w3-padding" style="display: inline-block;letter-spacing: normal;font-size: 1.4em;">
         <a href="logout.php" title="Logout">

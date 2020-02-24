@@ -54,7 +54,9 @@ if ( !($username_error || $email_error || $invalid_email_error)
 		VALUES ('$last_id', '$prog_id', NOW(), NOW())";
 
 	if (mysqli_query($conn, $sql_insert_client_sub)) {
-		header("Location: " . "temp.php");//member-homepage
+		session_start();
+		$_SESSION['user'] = getClients($conn, "client_id=".$last_id)[$last_id];
+		redirect('member-home.php', 'welcome=true');
 	} else {
 	  echo "Error: " . $sql_insert_client_sub . "<br>" . mysqli_error($conn);
 	}

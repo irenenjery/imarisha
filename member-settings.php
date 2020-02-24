@@ -146,10 +146,10 @@ $sub_enddate = $_SESSION['sub_enddate'];
         <p>
           <p>Change program to</p>
 					<select class="w3-select w3-border" name="prog_id" id="select_prog" style="text-transform: capitalize;">
-					  <option disabled selected>Select a program</option>
+					  <option value="null" selected>- Don't change -</option>
 					  <?php foreach ($programs as $prog_id => $prog): ?>
         			<?php if ( $prog_id == $user['client_prog_id']) continue;?>
-					  	<option value="<?php echo $prog_id ?>" data-progopt>
+					  	<option value="<?php echo $prog_id ?>">
 					  		<?php echo $prog['prog_title'] ?>
 					  	</option>
 					  <?php endforeach ?>
