@@ -161,7 +161,7 @@ function getClients($conn, $condition=true)
 
 	if ($result && mysqli_num_rows($result) > 0) {
     while($row = mysqli_fetch_assoc($result)) {
-      array_push($clients_data, $row);
+    	$clients_data[$row['client_id']] = $row;
     }
 	}
 	return $clients_data;
