@@ -1,20 +1,13 @@
 <?php 
 session_start();
 $user = $_SESSION['user'];
+$sub_active = $_SESSION['sub_active'];
+$sub_startdate = $_SESSION['sub_startdate'];
+$sub_enddate = $_SESSION['sub_enddate'];
 ?>
 
-<?php require 'includes/db/connectdb_imarisha.php'; ?>
-<?php require 'includes/db/db_functions.php' ?>
-
-<?php 
-$programs = getPrograms($conn);
-mysqli_close($conn);
-?>
-
-<?php 
-date_default_timezone_set("Africa/Nairobi");
-$active = strtotime("now") < strtotime($user['sub_enddate']);
-?>
+<!-- db data -->
+<?php require 'includes/db/getall_programs.php' ?>
 
 <!-- HTML5 boilerplate -->
 <?php require 'includes/views/head.php'; ?>
@@ -35,7 +28,7 @@ $active = strtotime("now") < strtotime($user['sub_enddate']);
 
     <section id="profile" class="w3-right w3-display-right">
       <span style="font-size: 1.3em;vertical-align: 10%">
-        <?php echo $user['client_username']; ?>
+        <a href="member-home.php"><?php echo $user['client_username']; ?></a>
       </span>
       <div class="w3-padding" style="display: inline-block;letter-spacing: normal;font-size: 1.4em;">
         <a href="logout.php" title="Logout">
@@ -50,18 +43,18 @@ $active = strtotime("now") < strtotime($user['sub_enddate']);
 </section><!-- section.w3-top -->
 
 <!-- Header -->
-<header id="member_home" class="w3-display-container w3-content w3-center" style="max-width: 1500px;height: 250px;">
+<header id="member_home" class="w3-display-container w3-content w3-center" style="max-width: 1500px;height: 200px;margin-top: 70px;">
   <div id="welcome" class="w3-display-middle w3-margin-top">
     <h1 class="w3-xxlarge">
       Program <span class="w3-border w3-border-black w3-padding" style="text-transform: capitalize;">
       	<?php echo $user['client_sub_prog']; ?>
       </span><br>
-      <?php if ( $active ): ?>
+      <?php if ( $sub_active ): ?>
 	      <sub class="w3-text-green">
-	      	Active: ends <?php echo $user['sub_enddate']; ?><br>
+	      	Active: ends <?php echo $sub_enddate; ?><br>
 	      </sub>
       <?php else: ?>
-      	<sub class="w3-text-red">Inactive since <?php echo $user['sub_enddate'];?></sub><br>
+      	<sub class="w3-text-red">Inactive since <?php echo $sub_enddate; ?></sub><br>
     	<?php endif ?>
     </h1>
   </div><!-- div#welcome -->
@@ -85,26 +78,26 @@ $active = strtotime("now") < strtotime($user['sub_enddate']);
         </tr>
         <tr>
         	<td>Status:</td>
-        	<?php if ( $active ): ?>
+        	<?php if ( $sub_active ): ?>
         		<td class="w3-text-green">active</td>
         	<?php else: ?>
         		<td class="w3-text-red">inactive</td>
         	<?php endif ?>
         </tr>
-        <?php if ( $active ): ?>
+        <?php if ( $sub_active ): ?>
 	        <tr>
 	        	<td>Subscription start date:</td>
-	        	<td><?php echo $user['sub_startdate'] ?></td>
+	        	<td><?php echo $sub_startdate; ?></td>
 	        </tr>
 	        <tr>
 	        	<td>Subscription end date:</td>
-	        	<td><?php echo $user['sub_enddate'] ?></td>
+	        	<td><?php echo $sub_enddate; ?></td>
 	        </tr>
         <?php endif ?>
       </table>
-      <form class="w3-padding" id="change_prog">
+      <form class="w3-padding">
         <p class="">You can request a change in program...</p>
-        <ul id="program-list">
+        <ul id="prog_list">
         	<?php foreach ($programs as $key => $prog): ?>
         		<?php 
         			if ( $prog['prog_id'] == $user['client_prog_id']) continue;
@@ -144,19 +137,19 @@ $active = strtotime("now") < strtotime($user['sub_enddate']);
         </p>
         <p>
         	<label for="pass">Change password</label>
-          <input class="w3-input" type="password" name="pass" placeholder="new password" id="pass" oninput="validatePassword()">
+          <input class="w3-input" type="password" name="pass" placeholder="new password" id="pass" oninput="validate_password()" autocomplete="off">
         </p>
         <p>
-          <input class="w3-input" type="password" name="pass2" placeholder="confirm password" id="pass2" onchange="validatePassword()" oninput="validatePassword()">
+          <input class="w3-input" type="password" name="pass2" placeholder="confirm password" id="pass2" onchange="validate_password()" oninput="validate_password()">
           <span class="warning w3-text-red" id="passwarning" style="visibility: hidden;">Passwords don't match</span>
         </p>
         <p>
           <p>Change program to</p>
-					<select class="w3-select w3-border" name="prog_id" id="programs" style="text-transform: capitalize;" required>
+					<select class="w3-select w3-border" name="prog_id" id="select_prog" style="text-transform: capitalize;" required>
 					  <option disabled selected>Select a program</option>
-					  <?php foreach ($programs as $key => $prog): ?>
-        			<?php if ( $prog['prog_id'] == $user['client_prog_id']) continue;?>
-					  	<option value="<?php echo $prog['prog_id'] ?>">
+					  <?php foreach ($programs as $prog_id => $prog): ?>
+        			<?php if ( $prog_id == $user['client_prog_id']) continue;?>
+					  	<option value="<?php echo $prog_id ?>" data-progopt>
 					  		<?php echo $prog['prog_title'] ?>
 					  	</option>
 					  <?php endforeach ?>
@@ -175,11 +168,28 @@ $active = strtotime("now") < strtotime($user['sub_enddate']);
 <?php require 'includes/views/footer.php'; ?>
 <script>
 	'use strict';
-	let change_prog = document.getElementById('change_prog'),
-			;
-	change_prog.addEventListener('click', function(event) {
+	let prog_list = document.getElementById('prog_list'),
+			select_prog = document.getElementById('select_prog');
+
+	prog_list.addEventListener('click', function(event) {
 		if ( event.target.dataset.prog != undefined ) {
-			let selected_prog = event.target.value;
+			let selected_prog_id = event.target.value;
+			//select program option
+			select_prog.value = selected_prog_id;
 		}
-	})
+	});
+
+	function validate_password() {
+		let pass = document.getElementById("pass"),
+				pass2 = document.getElementById("pass2"),
+				pass_warning = document.getElementById("passwarning");
+
+		if ( pass.value != pass2.value ) {
+			pass_warning.style.visibility = "visible";
+			return false;
+		} else {
+			pass_warning.style.visibility = "hidden";
+			return true;
+		}
+	}
 </script>
