@@ -8,7 +8,7 @@ $user_id = $_SESSION['user_id'];
 <?php require 'includes/db/db_functions.php' ?>
 
 <?php 
-$user = getClients($conn, "client_id=".$user_id)[0];
+$user = getClients($conn, "client_id=".$user_id)[$user_id];
 $timetable_data = getTimetable($conn);
 
 mysqli_close($conn);
