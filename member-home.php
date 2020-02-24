@@ -1,6 +1,10 @@
 <?php require 'includes/helper_functions.php' ?>
 <?php 
 session_start();
+if ( !isset($_SESSION['user']) ) {
+  header('Location: index.php#sign-in');
+}
+
 date_default_timezone_set("Africa/Nairobi");
 $user = $_SESSION['user'];
 $sub_active = $_SESSION['sub_active'] = strtotime("now") < strtotime($user['sub_enddate']);

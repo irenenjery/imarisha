@@ -1,5 +1,8 @@
 <?php 
 session_start();
+if ( !isset($_SESSION['user']) ) {
+  header('Location: index.php#sign-in');
+}
 $user = $_SESSION['user'];
 $sub_active = $_SESSION['sub_active'];
 $sub_startdate = $_SESSION['sub_startdate'];
