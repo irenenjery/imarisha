@@ -1,4 +1,9 @@
 <?php
+/** Formats SQL date as d.m.Y */
+function format_sqldate($sqldate)
+{
+	return date('d.m.Y', strtotime($sqldate));
+}
 /** Redirects to the specified page */
 function redirect($redirect_to, $urlparams)
 {
