@@ -137,15 +137,15 @@ $sub_enddate = $_SESSION['sub_enddate'];
         </p>
         <p>
         	<label for="pass">Change password</label>
-          <input class="w3-input" type="password" name="pass" placeholder="new password" id="pass" value="" oninput="validate_password()" autocomplete="off" required>
+          <input class="w3-input" type="password" name="pass" placeholder="new password" id="pass" value="" oninput="validate_password()" autocomplete="off">
         </p>
         <p>
-          <input class="w3-input" type="password" name="pass2" placeholder="confirm password" id="pass2" onchange="validate_password()" oninput="validate_password()" required="">
+          <input class="w3-input" type="password" name="pass2" placeholder="confirm password" id="pass2" onchange="validate_password()" oninput="validate_password()">
           <span class="warning w3-text-red" id="passwarning" style="visibility: hidden;">Passwords don't match</span>
         </p>
         <p>
           <p>Change program to</p>
-					<select class="w3-select w3-border" name="prog_id" id="select_prog" style="text-transform: capitalize;" required>
+					<select class="w3-select w3-border" name="prog_id" id="select_prog" style="text-transform: capitalize;">
 					  <option disabled selected>Select a program</option>
 					  <?php foreach ($programs as $prog_id => $prog): ?>
         			<?php if ( $prog_id == $user['client_prog_id']) continue;?>
