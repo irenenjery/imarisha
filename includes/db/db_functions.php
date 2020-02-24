@@ -187,7 +187,7 @@ function getCoaches($conn, $condition=true)
 
 	if ($result && mysqli_num_rows($result) > 0) {
     while($row = mysqli_fetch_assoc($result)) {
-      array_push($coaches_data, $row);
+    	$coaches_data[$row['coach_id']] = $row;
     }
 	}
 	return $coaches_data;
