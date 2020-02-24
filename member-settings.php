@@ -123,24 +123,24 @@ $sub_enddate = $_SESSION['sub_enddate'];
       <h2 class="service-title w3-padding-12 w3-center">
         Account Details
       </h2>
-      <form class="w3-container w3-padding" style="margin-top: -50px">
+      <form class="w3-container w3-padding" style="margin-top: -50px" autocomplete="off">
         <p>
-        	<label for="name">Full name</label>
-        	<input class="w3-input w3-validate" type="text" name="lname" placeholder="name" id="name" value="<?php echo $user['client_name'] ?>" disabled>
+        	<label for="name" class="w3-text-grey">Full name</label>
+        	<input class="w3-input w3-validate" type="text" name="lname" placeholder="name" id="name" value="<?php echo $user['client_name'] ?>" readonly>
         <p>
-        	<label for="username">Username</label>
-          <input class="w3-input w3-validate" type="text" name="username" value="<?php echo $user['client_username'] ?>" id="username" disabled>
+        	<label for="username" class="w3-text-grey">Username</label>
+          <input class="w3-input w3-validate" type="text" name="username" value="<?php echo $user['client_username'] ?>" id="username" readonly>
         </p>
         <p>
-        	<label for="email">Email</label>
-          <input class="w3-input" type="email" name="email" value="<?php echo $user['client_email'] ?>" id="email">
+        	<label for="email" class="w3-text-grey">Email</label>
+          <input class="w3-input" type="email" name="email" value="<?php echo $user['client_email'] ?>" id="email" readonly>
         </p>
         <p>
         	<label for="pass">Change password</label>
-          <input class="w3-input" type="password" name="pass" placeholder="new password" id="pass" oninput="validate_password()" autocomplete="off">
+          <input class="w3-input" type="password" name="pass" placeholder="new password" id="pass" value="" oninput="validate_password()" autocomplete="off" required>
         </p>
         <p>
-          <input class="w3-input" type="password" name="pass2" placeholder="confirm password" id="pass2" onchange="validate_password()" oninput="validate_password()">
+          <input class="w3-input" type="password" name="pass2" placeholder="confirm password" id="pass2" onchange="validate_password()" oninput="validate_password()" required="">
           <span class="warning w3-text-red" id="passwarning" style="visibility: hidden;">Passwords don't match</span>
         </p>
         <p>
