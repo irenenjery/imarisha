@@ -11,18 +11,22 @@ $sub_enddate = $_SESSION['sub_enddate'];
 $pass_update = $prog_update = null;
 ?>
 
-<!-- db data -->
-<?php require 'includes/db/getall_programs.php' ?>
-
 <?php if ( isset($_POST['pass']) ): ?>
   <?php require 'includes/db/connectdb_imarisha.php'; ?>
   <?php 
     $pass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
-    $pass_update = updateClientPass($conn, $pass, $user['client_id']);
+    $sql_update_pass = "
+      UPDATE clients 
+      SET client_pass='$pass'
+      WHERE client_id=". $client_id;
+
+    $pass_update = mysqli_query($conn, $sql_update_pass);
     mysqli_close($conn);
   ?>
 <?php endif ?>
 
+<!-- db data -->
+<?php require 'includes/db/getall_programs.php' ?>
 
 <!-- HTML5 boilerplate -->
 <?php require 'includes/views/head.php'; ?>
