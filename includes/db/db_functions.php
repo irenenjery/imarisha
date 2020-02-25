@@ -282,4 +282,14 @@ function getTimetable($conn, $condition=true)
 	}
 	return $tt_data;
 }
+//Update
+function updateClientPass($conn, $pass, $client_id)
+{
+  $sql_update_pass = "
+    UPDATE clients 
+    SET client_pass='$pass'
+    WHERE client_id=". $client_id;
+
+  return mysqli_query($conn, $sql_update_pass);
+}
 ?>

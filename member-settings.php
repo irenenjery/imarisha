@@ -7,10 +7,22 @@ $user = $_SESSION['user'];
 $sub_active = $_SESSION['sub_active'];
 $sub_startdate = $_SESSION['sub_startdate'];
 $sub_enddate = $_SESSION['sub_enddate'];
+
+$pass_update = $prog_update = null;
 ?>
 
 <!-- db data -->
 <?php require 'includes/db/getall_programs.php' ?>
+
+<?php if ( isset($_POST['pass']) ): ?>
+  <?php require 'includes/db/connectdb_imarisha.php'; ?>
+  <?php 
+    $pass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
+    $pass_update = updateClientPass($conn, $pass, $user['client_id']);
+    mysqli_close($conn);
+  ?>
+<?php endif ?>
+
 
 <!-- HTML5 boilerplate -->
 <?php require 'includes/views/head.php'; ?>
@@ -47,7 +59,20 @@ $sub_enddate = $_SESSION['sub_enddate'];
 
 <!-- Header -->
 <header id="member_home" class="w3-display-container w3-content w3-center" style="max-width: 1500px;height: 200px;margin-top: 70px;">
-  <div id="welcome" class="w3-display-middle w3-margin-top">
+  <?php if ($pass_update === true): ?>
+    <div class="w3-tag w3-green w3-right" id="msgbox">
+      <h3>
+        <span>Password updated successfully!</span>&nbsp;&nbsp;
+       <span onclick="this.parentElement.style.display='none'" class="w3-closebtn">&times;</span> </h3>
+    </div> 
+  <?php elseif ($pass_update === false): ?>
+    <div class="w3-tag w3-red w3-right" id="msgbox">
+      <h3>
+        <span>Couldn't change password. Try again.</span>&nbsp;&nbsp;
+       <span onclick="this.parentElement.style.display='none'" class="w3-closebtn">&times;</span> </h3>
+    </div> 
+  <?php endif ?>
+  <div id="welcome" class="w3-display-middle w3-margin-top w3-hide-medium w3-hide-small">
     <h1 class="w3-xxlarge">
       Program <span class="w3-border w3-border-black w3-padding" style="text-transform: capitalize;">
       	<?php echo $user['client_sub_prog']; ?>
@@ -126,7 +151,7 @@ $sub_enddate = $_SESSION['sub_enddate'];
       <h2 class="service-title w3-padding-12 w3-center">
         Account Details
       </h2>
-      <form class="w3-container w3-padding" style="margin-top: -50px" autocomplete="off">
+      <form onsubmit="validate_form(); return false" class="w3-container w3-padding" style="margin-top: -50px" autocomplete="off" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" id="form-update">
         <p>
         	<label for="name" class="w3-text-grey">Full name</label>
         	<input class="w3-input w3-validate" type="text" name="lname" placeholder="name" id="name" value="<?php echo $user['client_name'] ?>" readonly>
@@ -159,8 +184,7 @@ $sub_enddate = $_SESSION['sub_enddate'];
 					</select>
         </p>
         <p>
-          <button type="submit" class="w3-btn-block w3-teal w3-large" style="">Change details</button>
-          <!-- <submit class="w3-btn-block w3-teal w3-large" style="">Register</submit> -->
+          <button type="submit" class="w3-btn-block w3-teal w3-large">Change details</button>
         </p>
       </form>
     </article>   
@@ -195,4 +219,9 @@ $sub_enddate = $_SESSION['sub_enddate'];
 			return true;
 		}
 	}
+  function validate_form() {
+    let form_update = document.getElementById("form-update");
+    // password
+    if ( validate_password() === true ) form_update.submit();
+  }
 </script>
