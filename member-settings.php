@@ -18,7 +18,7 @@ $pass_update = $prog_update = null;
     $sql_update_pass = "
       UPDATE clients 
       SET client_pass='$pass'
-      WHERE client_id=". $client_id;
+      WHERE client_id=". $user['client_id'];
 
     $pass_update = mysqli_query($conn, $sql_update_pass);
     mysqli_close($conn);
