@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 21, 2020 at 04:19 PM
+-- Generation Time: Feb 26, 2020 at 11:01 AM
 -- Server version: 5.7.11
 -- PHP Version: 5.6.18
 
@@ -89,8 +89,10 @@ CREATE TABLE `clients` (
 --
 
 INSERT INTO `clients` (`client_id`, `client_email`, `client_name`, `client_pass`, `client_username`) VALUES
-(2, 'johndoe@fake.com', 'John Dorean', '$2y$10$/yTSr85JkEIxf6MfNXlz3ezPUX/5.XNUq8CZuZR158fQdu8ASdQoa', 'johndoe'),
-(19, 'daphneduck@theducks.com', 'daphne duck', '$2y$10$QBRZKeGx1w83vUjog6hsqeV.U1FoxBj9lKao4xNrLjc4E4Cdodk3G', 'daphne');
+(2, 'johndoe@fake.com', 'John Dorean', '$2y$10$EEpIQ26qpXNBL1/JCjE6fumm0OtUJJyL/6n6iYkX7cSa0Pyn53DLa ', 'johndoe'),
+(19, 'daphneduck@theducks.com', 'daphne duck', '$2y$10$z8ARdY0E7hVaQ8arnQwL5ukXdNKQxDyjbvYSGLnif0WXj86EOVHXy', 'daphne'),
+(20, 'johnduck@theducks.com', 'john duck', '$2y$10$OudG0ooLNXtmHhWov5diceeP/P.N3.59rbI6WD5t2wdIKb4NR088i', 'johnduck'),
+(21, 'mikedean@fake.com', 'mike dean', '$2y$10$Bfe5sI6bNhDCATWJpNlCg..IV/qJ9KfpzpmKNUamVH5u3ETiyHgm.', 'mikedean');
 
 -- --------------------------------------------------------
 
@@ -102,6 +104,7 @@ CREATE TABLE `clients_view` (
 ,`client_email` varchar(255)
 ,`client_username` varchar(255)
 ,`client_name` varchar(255)
+,`client_prog_id` int(11)
 ,`client_sub_prog` varchar(255)
 ,`sub_startdate` date
 ,`sub_enddate` date
@@ -133,7 +136,7 @@ INSERT INTO `coaches` (`coach_id`, `coach_username`, `coach_email`, `coach_name`
 (5, '@Jimat', 'jim@BEACH.com', 'Jimat Beach', '$2y$10$JdRMxc4G3rjorsBhx38CYeN5wauepCaEyZ0/Vy40JlikxBtryozZq', 4, 'I think, I can, I am\r\nI think, I can, I am', 'prof_gymbeach_500x333.jpg'),
 (6, '@maybeBabie', 'maybebabie@fake.com', 'Maybe Babie', '$2y$10$YiHw3UF3GT5DeWLPcalvwekVawsWHwFWVpa0TWOvEfanDbur2QXyW', 7, 'Weight loss babie', 'prof_baby_500x333.jpg'),
 (7, '@karatekitty', 'karatekitty@fake.com', 'karate kitty', '$2y$10$FjytIJry3tvp2IhjvmnTLuQFf815sjTQXc6lnO41pfK8UycKz5AHC', 6, 'I specialize in muscle mass building for women6', 'prof_karate_500x333.jpg'),
-(8, '@arnie', 'arnie@fake.com', 'arnie shwarz', '$2y$10$mZ53t3zwU9487NHlDkqNt.7wR31wT7NwfktcPLyXZwlA789vXjR5m', 8, 'Get to the chopper', 'prof_arnie_500x333.jpg');
+(8, '@arnie', 'arnie@fake.com', 'arnie shwarz', '$2y$10$AlqmVVtM8V5eGDyXsDZ8xOl8DkEzchVK44QF09WZ5YqkRhh3EUYlC', 8, 'Get to the chopper', 'prof_arnie_500x333.jpg');
 
 -- --------------------------------------------------------
 
@@ -142,6 +145,8 @@ INSERT INTO `coaches` (`coach_id`, `coach_username`, `coach_email`, `coach_name`
 --
 CREATE TABLE `coaches_view` (
 `coach_id` int(11)
+,`coach_username` varchar(255)
+,`coach_email` varchar(255)
 ,`coach_name` varchar(255)
 ,`coach_prof` varchar(255)
 ,`coach_role` varchar(255)
@@ -219,7 +224,9 @@ CREATE TABLE `subscriptions` (
 
 INSERT INTO `subscriptions` (`sub_id`, `client_id`, `prog_id`, `sub_startdate`, `sub_enddate`) VALUES
 (2, 2, 8, '2020-01-01', '2020-02-29'),
-(13, 19, 5, '2020-02-20', '2020-02-20');
+(13, 19, 5, '2020-02-20', '2020-02-20'),
+(14, 20, 7, '2020-02-22', '2020-05-31'),
+(15, 21, 8, '2020-02-24', '2020-02-24');
 
 -- --------------------------------------------------------
 
@@ -243,7 +250,7 @@ CREATE TABLE `timetable_view` (
 --
 DROP TABLE IF EXISTS `clients_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `clients_view`  AS  select `c`.`client_id` AS `client_id`,`c`.`client_email` AS `client_email`,`c`.`client_username` AS `client_username`,`c`.`client_name` AS `client_name`,`p`.`prog_title` AS `client_sub_prog`,`s`.`sub_startdate` AS `sub_startdate`,`s`.`sub_enddate` AS `sub_enddate` from ((`clients` `c` left join `subscriptions` `s` on((`s`.`client_id` = `c`.`client_id`))) left join `programs` `p` on((`s`.`prog_id` = `p`.`prog_id`))) order by `p`.`prog_title` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `clients_view`  AS  select `c`.`client_id` AS `client_id`,`c`.`client_email` AS `client_email`,`c`.`client_username` AS `client_username`,`c`.`client_name` AS `client_name`,`p`.`prog_id` AS `client_prog_id`,`p`.`prog_title` AS `client_sub_prog`,`s`.`sub_startdate` AS `sub_startdate`,`s`.`sub_enddate` AS `sub_enddate` from ((`clients` `c` left join `subscriptions` `s` on((`s`.`client_id` = `c`.`client_id`))) left join `programs` `p` on((`s`.`prog_id` = `p`.`prog_id`))) order by `p`.`prog_id` ;
 
 -- --------------------------------------------------------
 
@@ -252,7 +259,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `coaches_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `coaches_view`  AS  select `c`.`coach_id` AS `coach_id`,`c`.`coach_name` AS `coach_name`,`c`.`coach_prof` AS `coach_prof`,`r`.`role_title` AS `coach_role`,`c`.`prof_pic` AS `coach_prof_pic` from (`coaches` `c` left join `roles` `r` on((`r`.`role_id` = `c`.`role_id`))) order by `r`.`role_id`,`c`.`coach_id` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `coaches_view`  AS  select `c`.`coach_id` AS `coach_id`,`c`.`coach_username` AS `coach_username`,`c`.`coach_email` AS `coach_email`,`c`.`coach_name` AS `coach_name`,`c`.`coach_prof` AS `coach_prof`,`r`.`role_title` AS `coach_role`,`c`.`prof_pic` AS `coach_prof_pic` from (`coaches` `c` left join `roles` `r` on((`r`.`role_id` = `c`.`role_id`))) order by `r`.`role_id`,`c`.`coach_id` ;
 
 -- --------------------------------------------------------
 
@@ -321,7 +328,7 @@ ALTER TABLE `subscriptions`
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT for table `coaches`
 --
