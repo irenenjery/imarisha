@@ -87,6 +87,8 @@ function createviewCoaches($conn)
 	$sql_create_coaches_view = "
     CREATE OR REPLACE VIEW coaches_view AS
     SELECT c.coach_id AS coach_id,
+      c.coach_username AS coach_username,
+      c.coach_email AS coach_email,
       c.coach_name AS coach_name,
       c.coach_prof AS coach_prof,
       r.role_title AS coach_role,
