@@ -6,14 +6,14 @@
 
 <!-- Page content -->
 <div class="w3-content w3-padding-64" style="max-width: 1564px;margin-top: 50px;">
-	<section id="login-form" class="w3-display-container w3-panel w3-card-2 w3-padding-0" style="width: 60%;margin: auto;height: 400px;">
+	<section id="login-form" class="w3-display-container w3-panel w3-card-2 w3-padding-0" style="width: 60%;margin: auto;">
 		<div class="w3-container w3-black w3-center" style="letter-spacing: 2px;">
 	  	<h2><span class="w3-border w3-border-white w3-padding">IM</span> Login</h2>
 		</div>
 
 		<form class="w3-container" name="sign-in" action="auth.php" method="POST">
 			<p class="warning w3-text-red" id="auth_error" style="display: none;">
-				The username and/or password are incorrect, please try again
+				The username and/or password don't match, please try again
 			</p>
 		  <p>
 		  <label class="w3-label w3-validate">Username</label>
@@ -21,7 +21,7 @@
 		  <p style="margin-top:50px;">
 		  <label class="w3-label w3-validate">Password</label>
 		  <a href="password_reset.php" class="w3-right">Forgot password?</a>
-		  <input class="w3-input" type="password" name="pass" required></p>
+		  <input class="w3-input" type="password" name="pass" autocomplete="off" required></p>
 		  <button class="w3-btn-block w3-blue" style="height: 50px;margin-top: 50px;">Sign in</button></p>
 		</form>
 	</section>
