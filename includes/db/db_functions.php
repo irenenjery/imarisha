@@ -140,6 +140,35 @@ function getAuthCoach($conn, $condition)
 	}
 	return $coach_auth_data;
 }
+
+/**
+ Returns a two-dimensional associative array of trainer applicants filtered by a specified condition.
+ 
+ The outer array is indexed by `app_id` and each indexed member is an
+ associative array, $applicant, containing:
+ - $applicant['app_id']
+ - $applicant['app_name']
+ - $applicant['app_email']
+ - $applicant['app_phone']
+ - $applicant['app_resume'], applicant's uploaded resume file name
+ - $applicant['app_exp'], applicant's level of experience.
+ */
+function getApplicants($conn, $condition=true)
+{
+	$sql_select_applicants = "
+		SELECT * 
+		FROM applicants
+		WHERE " . $condition;
+	$result = mysqli_query($conn, $sql_select_applicants);
+	$applicants_data = array();
+
+	if ($result && mysqli_num_rows($result) > 0) {
+    while($row = mysqli_fetch_assoc($result)) {
+    	$applicants_data[$row['app_id']] = $row;
+    }
+	}
+	return $applicants_data;
+}
 /**
  Returns a two-dimensional associative array of registered clients filtered by a specified condition.
  
