@@ -14,15 +14,18 @@ $mismatch = true;
 
 // Trainer login; username starts with @
 if ( substr_compare(substr($username, 0, 1), '@', 0) == 0 ) {
+	echo "coach";
 	$user = getAuthCoach($conn, "coach_username='".$username."'");
   if ( password_verify($pass, $user['coach_pass']) ) {//password matches
 		$mismatch = false;
+		$user_type = 'coach';
 		$user_id = $user['coach_id'];
   }
 } else {
 	$user = getAuthClient($conn, "client_username='".$username."' OR client_email='".$username."'");
   if ( password_verify($pass, $user['client_pass']) ) {//password matches
 		$mismatch = false;
+		$user_type = 'client';
 		$user_id = $user['client_id'];
   }
 }
@@ -33,11 +36,15 @@ if ( $mismatch  ) {
 	$urlparams = 'auth_fail=match_error';
 } else {
 	session_start();
-	$redirect_to = 'member-home.php';
 	$urlparams = 'user_id='.$user_id;
-	$_SESSION['user'] = getClients($conn, "client_id=".$user_id)[$user_id];
+	if ( $user_type == 'client' ) {
+		$redirect_to = 'member-home.php';
+		$_SESSION['user'] = getClients($conn, "client_id=".$user_id)[$user_id];
+	} elseif ( $user_type == 'coach' ) {
+		$redirect_to = 'coach-home.php';
+		$_SESSION['user'] = getCoaches($conn, "coach_id=".$user_id)[$user_id];
+	}
 }
-
 redirect($redirect_to, $urlparams);
 mysqli_close($conn);
 ?>
