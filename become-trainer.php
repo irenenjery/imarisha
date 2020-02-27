@@ -51,7 +51,7 @@ mysqli_close($conn);
 <?php require 'includes/views/head.php'; ?>
 
 <!-- Navbar (sit on top) -->
-<!-- <?php #require 'includes/views/guest-persistent-navbar.php'; ?> -->
+<?php require 'includes/views/guest-persistent-navbar.php'; ?>
 
 <!-- Page content -->
 <div class="w3-content w3-padding-64" id="member-signup-container">

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 26, 2020 at 11:01 AM
+-- Generation Time: Feb 27, 2020 at 10:58 AM
 -- Server version: 5.7.11
 -- PHP Version: 5.6.18
 
@@ -19,6 +19,22 @@ SET time_zone = "+00:00";
 --
 -- Database: `imarisha`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `applicants`
+--
+
+CREATE TABLE `applicants` (
+  `app_id` int(11) NOT NULL,
+  `app_name` varchar(255) NOT NULL,
+  `app_email` varchar(255) NOT NULL,
+  `app_phone` int(11) NOT NULL,
+  `app_resume` varchar(255) NOT NULL,
+  `app_exp` enum('intern','beginner','intermediate','pro','guru') NOT NULL,
+  `app_specialty` varchar(255) NOT NULL DEFAULT 'intern'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -275,6 +291,14 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 
 --
+-- Indexes for table `applicants`
+--
+ALTER TABLE `applicants`
+  ADD PRIMARY KEY (`app_id`),
+  ADD UNIQUE KEY `app_email` (`app_email`),
+  ADD UNIQUE KEY `app_phone` (`app_phone`);
+
+--
 -- Indexes for table `class_schedule`
 --
 ALTER TABLE `class_schedule`
@@ -324,6 +348,11 @@ ALTER TABLE `subscriptions`
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `applicants`
+--
+ALTER TABLE `applicants`
+  MODIFY `app_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `clients`
 --
