@@ -20,7 +20,7 @@
 		  <input class="w3-input" id="username" type="username" name="username" required></p>
 		  <p style="margin-top:50px;">
 		  <label class="w3-label w3-validate">Password</label>
-		  <a href="password_reset.php" class="w3-right">Forgot password?</a>
+		  <a href="password-reset.php" class="w3-right">Forgot password?</a>
 		  <input class="w3-input" type="password" name="pass" autocomplete="off" required></p>
 		  <button class="w3-btn-block w3-blue" style="height: 50px;margin-top: 50px;">Sign in</button></p>
 		</form>
