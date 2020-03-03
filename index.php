@@ -22,7 +22,7 @@ mysqli_close($conn);
     	Welcome to <span class="w3-border w3-border-white w3-padding">IMARISHA</span>
     	<span class="w3-hide-small">Gym</span>
     </h1>
-    <div id="header-contacts" class="w3-yellow w3-hide-small w3-display-bottomright w3-row-padding w3-padding w3-opacity w3-center">
+    <div id="header-contacts" class="w3-bronze w3-hide-small w3-display-bottomright w3-row-padding w3-padding w3-center">
       <div class="w3-col m4 s6">
         <i class="lnr lnr-phone-handset"> </i> 0700000000
         <p class="w3-tiny">Work hours only</p>
@@ -48,21 +48,31 @@ mysqli_close($conn);
     </h2>
     <div class="w3-row-padding" id="program-list">
       <?php foreach ($programs_data as $prog_id => $program): ?>
-        <article class="program w3-col l4 m6" id=<?php echo "program-".$prog_id; ?>>
+        <article class="program w3-col l4" id='<?php echo "program-".$prog_id; ?>'>
           <div class="program-content w3-hover-shadow w3-display-container">
             <a href=<?php echo "member-signup.php?program_id=".$prog_id;?>>
-              <h3 class="program-title w3-center w3-display-topmiddle w3-padding-8">
-                <span class="program-name"><?php echo $program['prog_title']; ?></span>
+              <h3 class="program-title w3-center w3-display-topleft w3-padding-8">
+                <span class="program-name"><?php echo $program['prog_title']; ?></span> 
+                <span style="font-size: 0.65em"><i class="lnr lnr-hourglass"></i> <?php echo $program['prog_duration'] ?> weeks</span>
               </h3>
               <img class="program-img" alt="program" src=<?php echo "public/images/".$program['prog_pic'];?>>
               <div class="program-pricing w3-display-bottomright">
                <p class="program-price w3-padding">
-                Ksh <span><?php echo number_format($program['prog_price']); ?></span><sub>/month</sub></p>
+                Ksh <span><?php echo number_format($program['prog_price']); ?></span><sub>/course</sub></p>
               </div>
             </a>
           </div>
         </article><!-- article.program --> 
       <?php endforeach ?>
+      <article class="program w3-col l4 m6" id='learn-more'>
+        <div class="program-content w3-display-container">
+          <a href="member-signup.php" class="w3-btn w3-white w3-border w3-border-blue w3-text-blue  w3-wide w3-display-middle" style="font-size: 1.3em">
+            <span>Learn more</span>
+            <span class="lnr lnr-chevron-right-circle" style="vertical-align: -3px;"></span>
+          </a>
+        </div>
+      </article>
+      
     </div>
   </section><!-- section#programs -->
 
@@ -101,7 +111,7 @@ mysqli_close($conn);
       <?php endforeach ?>
     </div><!-- div#trainer-list -->
     <div id="become-trainer" class="w3-center w3-padding w3-large">
-      <a href="#" class="w3-btn w3-bronze w3-round" style="padding: 20px;width: 60%;">Become a trainer</a>
+      <a href="become-trainer.php" class="w3-btn w3-bronze w3-round" style="padding: 20px;width: 60%;">Become a trainer</a>
     </div>
   </section><!-- section#trainers -->
 
@@ -133,7 +143,7 @@ mysqli_close($conn);
       </li>
       <li class="exercise w3-hover-shadow w3-tag w3-padding w3-white w3-border w3-border-black" id="roll">
         <span class="exercise-icon flaticon-exercise-3"></span>&nbsp;&nbsp;
-        <span class="exercise-name">Exercise Rolling</span>
+        <span class="exercise-name">Rolling Exercise</span>
       </li>
     </ul>
   </section><!-- section#exercises -->
