@@ -40,9 +40,13 @@ function createviewTimetable($conn)
  data.
 
  The client_view contains the following columns:
- - 'client_id', unique identifier of a client
- - 'client_name', the client's full name
- - 'client_username', the client's username
+ - 'client_id', 
+ - 'client_name', 
+ - 'client_username',
+ - 'client_email',
+ - 'client_gender',
+ - 'client_dob', the client's date of birth
+ - 'client_exp', the client's level of experience in the gym
  - 'client_sub_prog', the client's subscribed program
  - 'sub_startdate', the subscription's start date
  - 'sub_enddate', the subscription's end date
@@ -51,15 +55,20 @@ function createviewClients($conn)
 {
 	$sql_create_clients_view = "
     CREATE OR REPLACE VIEW clients_view AS
-    SELECT c.client_id AS client_id,
-      c.client_email AS client_email, 
-      c.client_username AS client_username, 
+    SELECT c.client_id AS client_id, 
       c.client_name AS client_name, 
+      ca.client_username AS client_username, 
+      ca.client_email AS client_email, 
+      c.client_gender AS client_gender,
+      c.client_dob AS client_dob,
+      c.client_exp AS client_exp,
       p.prog_id AS client_prog_id,
       p.prog_title AS client_sub_prog,
       s.sub_startdate AS sub_startdate,
       s.sub_enddate AS sub_enddate
     FROM clients AS c
+    LEFT JOIN clients_auth AS ca
+    ON ca.client_id = c.client_id
     LEFT JOIN subscriptions AS s
     ON s.client_id = c.client_id
     LEFT JOIN programs AS p
@@ -77,8 +86,13 @@ function createviewClients($conn)
  data.
 
  The coach_view contains the following columns:
- - 'coach_id', unique identifier of a coach
- - 'coach_name', the coach's full name
+ - 'coach_id',
+ - 'coach_username',
+ - 'coach_email',
+ - 'coach_name',
+ - 'coach_gender',
+ - 'coach_dob', coach's date of birth
+ - 'coach_exp', coach's level of gym-work experience
  - 'coach_prof', the coach's profile
  - 'coach_role', the role title of the coach
  */
@@ -87,13 +101,18 @@ function createviewCoaches($conn)
 	$sql_create_coaches_view = "
     CREATE OR REPLACE VIEW coaches_view AS
     SELECT c.coach_id AS coach_id,
-      c.coach_username AS coach_username,
-      c.coach_email AS coach_email,
+      ca.coach_username AS coach_username,
+      ca.coach_email AS coach_email,
       c.coach_name AS coach_name,
+      c.coach_gender AS coach_gender,
+      c.coach_dob AS coach_dob,
+      c.coach_exp AS coach_exp,
       c.coach_prof AS coach_prof,
       r.role_title AS coach_role,
       c.prof_pic AS coach_prof_pic
     FROM coaches AS c
+    LEFT JOIN coaches_auth AS ca
+    ON ca.coach_id = c.coach_id
     LEFT JOIN roles AS r
     ON r.role_id = c.role_id
     ORDER BY r.role_id, c.coach_id";
@@ -111,7 +130,7 @@ function getAuthClient($conn, $condition)
 {
 	$sql_select_clients = "
 		SELECT * 
-		FROM clients
+		FROM clients_auth
 		WHERE " . $condition;
 	$result = mysqli_query($conn, $sql_select_clients);
 	$client_auth_data = array();
@@ -128,7 +147,7 @@ function getAuthCoach($conn, $condition)
 {
 	$sql_select_coaches = "
 		SELECT * 
-		FROM coaches
+		FROM coaches_auth
 		WHERE " . $condition;
 	$result = mysqli_query($conn, $sql_select_coaches);
 	$coach_auth_data = array();
@@ -152,6 +171,7 @@ function getAuthCoach($conn, $condition)
  - $applicant['app_phone']
  - $applicant['app_resume'], applicant's uploaded resume file name
  - $applicant['app_exp'], applicant's level of experience.
+ - $applicant['app_specialty'], applicant's specialty.
  */
 function getApplicants($conn, $condition=true)
 {
@@ -177,6 +197,10 @@ function getApplicants($conn, $condition=true)
  - $client['client_id']
  - $client['client_name']
  - $client['client_username']
+ - $client['client_email']
+ - $client['client_gender']
+ - $client['client_dob']
+ - $client['client_exp'], client's level of gym experience.
  - $client['client_sub_prog'], the program id of the program a client is subscribed to.
  - $client['sub_startdate'], subscription start date.
  - $client['sub_enddate'], subscription end date.
@@ -203,22 +227,47 @@ function getClients($conn, $condition=true)
  The outer array is indexed by `coach_id` and each indexed member is an
  associative array, $coach, containing:
  - $coach['coach_id']
+ - $coach['coach_username']
+ - $coach['coach_email']
  - $coach['coach_name']
+ - $coach['coach_gender']
+ - $coach['coach_dob'], coach's date of birth
+ - $coach['coach_exp'], coach's level of gym-work experience
  - $coach['coach_prof']
  - $coach['coach_role']
+ - $coach['coach_progs'], array of `prog_id`s associated with a coach
  */
 function getCoaches($conn, $condition=true)
 {		
 	$sql_select_coaches = "
-		SELECT * 
-		FROM coaches_view
-		WHERE " . $condition;
+		SELECT cw.coach_id AS coach_id,
+      cw.coach_username AS coach_username,
+      cw.coach_email AS coach_email,
+      cw.coach_name AS coach_name,
+      cw.coach_gender AS coach_gender,
+      cw.coach_dob AS coach_dob,
+      cw.coach_exp AS coach_exp,
+      cw.coach_prof AS coach_prof,
+      cw.coach_role AS coach_role,
+      cw.coach_prof_pic AS coach_prof_pic,
+      cs.prog_id AS prog_id
+		FROM coaches_view AS cw, class_schedule AS cs
+		WHERE cw.coach_id = cs.coach_id
+			AND " . $condition;
 	$result = mysqli_query($conn, $sql_select_coaches);
 	$coaches_data = array();
 
 	if ($result && mysqli_num_rows($result) > 0) {
     while($row = mysqli_fetch_assoc($result)) {
-    	$coaches_data[$row['coach_id']] = $row;
+    	$coach_id = $row['coach_id'];
+	  	if ( array_key_exists($coach_id, $coaches_data) ) {
+	  		if ( !in_array($row['prog_id'], $coaches_data[$coach_id]['coach_progs']) ) {
+					array_push($coaches_data[$coach_id]['coach_progs'], $row['prog_id']);
+				}
+			} else {
+				$coaches_data[$coach_id] = $row;
+				$coaches_data[$coach_id]['coach_progs'] = array($row['prog_id']);
+			}
     }
 	}
 	return $coaches_data;
