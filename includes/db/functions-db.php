@@ -158,7 +158,7 @@ function getAuthClient($conn, $condition)
  - $client['sub_startdate'], subscription start date.
  - $client['sub_enddate'], subscription end date.
  */
-function getClients($conn, $condition=true)
+function getClients($conn, $condition=1)
 {
 	$sql_select_clients = "
 		SELECT * 
@@ -207,7 +207,7 @@ function getAuthCoach($conn, $condition)
  - $coach['coach_role']
  - $coach['coach_progs'], array of `prog_id`s associated with a coach
  */
-function getCoaches($conn, $condition=true)
+function getCoaches($conn, $condition=1)
 {		
 	$sql_select_coaches = "
 		SELECT cw.coach_id AS coach_id,
@@ -255,7 +255,7 @@ function getCoaches($conn, $condition=true)
  - $applicant['app_exp'], applicant's level of experience.
  - $applicant['app_specialty'], applicant's specialty.
  */
-function getApplicants($conn, $condition=true)
+function getApplicants($conn, $condition=1)
 {
 	$sql_select_applicants = "
 		SELECT * 
@@ -280,7 +280,7 @@ function getApplicants($conn, $condition=true)
  - $role['role_title']
  - $role['role_descr']
  */
-function getRoles($conn, $condition=true)
+function getRoles($conn, $condition=1)
 {		
 	$sql_select_roles = "
 		SELECT * 
@@ -307,7 +307,7 @@ function getRoles($conn, $condition=true)
  - $program['prog_descr']
  - $program['prog_duration']
  */
-function getPrograms($conn, $condition=true)
+function getPrograms($conn, $condition=1)
 {		
 	$sql_select_prog = "
 		SELECT *
@@ -338,7 +338,7 @@ function getPrograms($conn, $condition=true)
  - $tt[$day][$index]['tt_coach_id']
  - $tt[$day][$index]['tt_coach'], eg $tt['mon'][0]['tt_coach'] == 'Jane Doe'
  */
-function getTimetable($conn, $condition=true)
+function getTimetable($conn, $condition=1)
 {
 	$sql_select_tt = "
 		SELECT *
@@ -360,5 +360,66 @@ function getTimetable($conn, $condition=true)
 		}
 	}
 	return $tt_data;
+}
+/**
+ Returns a two-dimensional associative array of exercises filtered by a specified condition.
+ 
+ The outer array is indexed by `prog_id` and each indexed member is an
+ associative array, $ex, containing:
+ - $ex['ex_id']
+ - $ex['ex_title']
+ - $ex['ex_descr']
+ */
+function getExercises($conn, $condition=1)
+{
+	$sql_select_ex = "
+		SELECT *
+		FROM exercises
+		WHERE $condition";
+
+	$result = mysqli_query($conn, $sql_select_ex);
+	$ex_data = array();
+
+	if ($result && mysqli_num_rows($result) > 0) {
+	  while($row = mysqli_fetch_assoc($result)) {
+	  	$ex_data[$row['ex_id']] = $row;
+	  }
+	}
+	return $ex_data;
+}
+/**
+ Returns a workout plan for a specified program grouped by days as an associative array.
+
+ Each member represents a day of the week,  
+ 	$days = array('mon', 'tue', 'wed', 'thur', 'fri', 'sat', 'sun')
+ and each day contains the workout routine scheduled for that day:
+ - $wp[$day][$index]['wp_id']
+ - $wp[$day][$index]['wp_day'], eg $wp['mon'][0]['wp_day'] == 'mon'
+ - $wp[$day][$index]['ex_id'], the exercise id of an exercise
+ - $wp[$day][$index]['wp_ex_details'], details on the specific workout exercise
+ */
+function getWorkoutplan($conn, $prog_id, $condition=1)
+{
+	$sql_select_workoutplan = "
+		SELECT *
+		FROM workoutplan_$prog_id
+		WHERE $condition";
+	$result = mysqli_query($conn, $sql_select_workoutplan);
+
+ 	$days = array('mon', 'tue', 'wed', 'thur', 'fri', 'sat', 'sun');
+ 	$wp_data = array();
+
+ 	foreach ($days as $key => $day) {
+ 		$wp_data[$day] = array();//empty day implies rest
+ 	}	
+
+ 	if ($result && mysqli_num_rows($result) > 0) {
+    while($row = mysqli_fetch_assoc($result)) {
+    	$wp_day = $row['wp_day'];
+
+			array_push($wp_data[$wp_day], $row);
+		}
+	}
+	return $wp_data;
 }
 ?>

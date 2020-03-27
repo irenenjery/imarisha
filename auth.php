@@ -1,6 +1,6 @@
-<?php require 'includes/db/connectdb_imarisha.php'; ?>
-<?php require 'includes/db/db_functions.php' ?>
-<?php require 'includes/helper_functions.php'; ?>
+<?php require 'includes/db/connectdb-imarisha.php'; ?>
+<?php require 'includes/db/functions-db.php' ?>
+<?php require 'includes/functions-helper.php'; ?>
 
 <?php 
 //empty fields
@@ -14,7 +14,6 @@ $mismatch = true;
 
 // Trainer login; username starts with @
 if ( substr_compare(substr($username, 0, 1), '@', 0) == 0 ) {
-	echo "coach";
 	$user = getAuthCoach($conn, "coach_username='".$username."'");
   if ( password_verify($pass, $user['coach_pass']) ) {//password matches
 		$mismatch = false;
@@ -30,19 +29,20 @@ if ( substr_compare(substr($username, 0, 1), '@', 0) == 0 ) {
   }
 }
 
-//username/email doesn't exist or password doesn't match
+// username/email doesn't exist or password doesn't match
 if ( $mismatch  ) {
 	$redirect_to = 'login.php';
-	$urlparams = 'auth_fail=match_error';
+	$urlparams = 'auth_error';
 } else {
 	session_start();
-	$urlparams = 'user_id='.$user_id;
 	if ( $user_type == 'client' ) {
 		$redirect_to = 'member-home.php';
-		$_SESSION['user'] = getClients($conn, "client_id=".$user_id)[$user_id];
+		$_SESSION['client'] = getClients($conn, "client_id=".$user_id)[$user_id];
+		$urlparams = 'user='.$_SESSION['client']['client_username'];
 	} elseif ( $user_type == 'coach' ) {
 		$redirect_to = 'coach-home.php';
-		$_SESSION['user'] = getCoaches($conn, "coach_id=".$user_id)[$user_id];
+		$_SESSION['coach'] = getCoaches($conn, "cw.coach_id=".$user_id)[$user_id];
+		$urlparams = 'user='.$_SESSION['coach']['coach_username'];
 	}
 }
 redirect($redirect_to, $urlparams);

@@ -1,5 +1,5 @@
 <!-- Footer -->
-<footer class="w3-row-padding w3-black w3-padding-16">
+<footer class="w3-row-padding w3-black w3-padding-16" id="footer">
   <section class="w3-col l5" id="about">
     <h3>About Us</h3>
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -59,3 +59,5 @@
     </div>
   </section>
 </footer>
+</body>
+</html>

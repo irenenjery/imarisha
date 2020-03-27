@@ -1,4 +1,8 @@
 /* Imarisha stylesheet by Irene Njeri*/
+/*@charset "utf-8";
+body, *, [class*="w3"]{
+	font-family: century gothic;
+}*/
 header#homepage-header {
 	max-width: 1500px;
 	height: 450px;
@@ -8,24 +12,50 @@ header#homepage-header #header-contacts{
 	min-width: 500px;
 	min-height: 60px;
 }
-h2.service-title {
+h2.prog-title {	
+	font-size: 28px;
+	position: relative;
+	text-transform: uppercase;
+	font-weight: 700;
+}
+h2.prog-title:after {
+  width: 80px;
+  height: 2px;
+  background: #f73471;
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+.service-title {
 	font-size: 40px;
 	position: relative;
 	padding-top: 30px;
 	text-transform: uppercase;
 	font-weight: 800;
 }
-h2.service-title:before {
-    width: 80px;
-    height: 2px;
-    background: #f73471;
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-    -ms-transform: translateX(-50%);
-    transform: translateX(-50%);
+.service-title:before {
+  width: 80px;
+  height: 2px;
+  background: #f73471;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+.td_time {
+	margin: auto;
+  width: 60%;
+  border-bottom: 1px dashed rgba(255,255,255,0.2);
+}
+.td_time:last-child {
+	border-bottom: none;
 }
 #homepage-content {
 	max-width: 1564px;
@@ -55,9 +85,13 @@ h2.service-title:before {
 	overflow-y: auto;
 }
 .program-price {
-    color: #bfbfbf;
+    color: #fff;
     font-weight: 800;
-    background: linear-gradient(45deg, #ff0055 0%, #ff6600 100%);
+    background: linear-gradient(45deg, #CD7F32 50%, #FFD700 100%);
+}
+.selected_prog {
+  color: #fff;
+  background: linear-gradient(45deg, #CD7F32 50%, #FFD700 100%);
 }
 .program-time-details {
 	font-size: 0.5em;
@@ -115,6 +149,8 @@ h2.service-title:before {
 }
 .tt-day-title {
 	text-transform: capitalize;
+  color: #fff;
+  background: linear-gradient(45deg, #000 0%, #555 100%);
 }
 .tt-session {
 	min-height: 160px;
@@ -148,12 +184,55 @@ h2.service-title:before {
 	color:#fff!important;
 	background-color: #FFD700!important;/*gold*/
 }
+.tt-text-code4 {
+	color: #2196F3!important;/*w3-text-blue*/
+}
+.tt-text-code {
+	color: #9e9e9e!important;/*w3-text-grey*/
+}
+.tt-text-code8 {
+	color: #CD7F32!important;/*bronze*/
+}
+.tt-text-code5 {
+	color: #009688!important;/*w3-text-teal*/
+}
+.tt-text-code6 {
+	color: #9c27b0!important;/*w3-text-purple*/
+}
+.tt-text-code7 {
+	color: #4CAF50!important;/*w3-text-green*/
+}
+.tt-text-code-private {
+	color: #FFD700!important;/*gold*/
+}
+
+.tt-border-code4 {
+	border-color: #2196F3!important;/*w3-text-blue*/
+}
+.tt-border-code {
+	border-color: #9e9e9e!important;/*w3-text-grey*/
+}
+.tt-border-code8 {
+	border-color: #CD7F32!important;/*bronze*/
+}
+.tt-border-code5 {
+	border-color: #009688!important;/*w3-text-teal*/
+}
+.tt-border-code6 {
+	border-color: #9c27b0!important;/*w3-text-purple*/
+}
+.tt-border-code7 {
+	border-color: #4CAF50!important;/*w3-text-green*/
+}
+.tt-border-code-private {
+	border-color: #FFD700!important;/*gold*/
+}
 
 .tt-program {
 	text-transform: uppercase;
 	font-size: 0.9em;
 }
-.tt-trainer {
+.tt-trainer, .tt-trainees {
 	width: 100%;
 	white-space: nowrap;
 	overflow: hidden;
@@ -208,15 +287,14 @@ form#sign-in input {
 }
 
 .session {
-	height: 150px;
+	height: 180px;
+	overflow-y: auto;
 }
 #member-signup-container {
 	max-width: 1564px;
 	margin-top: 50px;
 }
 #member-signup {
-	width: 55%;
-	margin: auto;
 }
 li.prog {
 	width: 90%;
@@ -230,4 +308,44 @@ li.prog input[type='radio'] {
 	position: absolute;
 	top: 10px;
 	left: 15px;
+}
+#msgbox {
+	position: fixed;
+	top: 100px;
+	left: 0;
+	z-index: 10;
+}
+i.ex-info:hover {
+	cursor: pointer;
+}
+.ex-descr {
+	margin-top: -5px;
+	border-radius: 5px;
+}
+.ex-descr:before {
+	position: absolute;
+	top: -20px;
+	left: 5%;
+	content: ' ';
+	border-bottom: 10px solid #2196F3;
+	border-left: 10px solid rgba(255,255,255,0);
+	border-right: 10px solid rgba(255,255,255,0);
+	border-top: 10px solid rgba(255,255,255,0);
+}
+
+.pp-top {
+	display: inline-block;
+	padding: 2px 0 0 4px;
+	border: 1px solid grey;
+	border-bottom: 0;
+	border-radius: 50%;
+	font-size: 0.9em;
+	vertical-align: -2px;
+	text-transform: capitalize;
+  color: #fff;
+  /*background: linear-gradient(45deg, #d6d6d6 0%, #fff 100%);*/
+}
+.time-past {
+	color: #87CEEB;
+	text-decoration: line-through;	
 }
