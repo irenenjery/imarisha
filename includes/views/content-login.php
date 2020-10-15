@@ -10,7 +10,7 @@
 					<i class="lnr lnr-warning"></i> The username and password don't match, please try again
 				</p>
 			<?php elseif (isset($_GET['pass_reset'])): ?>
-		    <div class="w3-panel w3-green w3-animate-left" id="msgbox">
+		    <div class="w3-panel w3-green w3-animate-left msgbox" id="">
 		      <h3>
 		        <span>
 		        	<i class="icon-done" style="vertical-align: -3px"></i>

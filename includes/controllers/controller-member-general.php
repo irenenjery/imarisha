@@ -5,9 +5,7 @@
 session_start();
 if ( !isset($_SESSION['client']) ) {
   header('Location: index.php#sign-in');
-} elseif ( isset($_SESSION['welcome']) ) {
-  header('Location: member-welcome.php?welcome=true');
-}
+} 
 
 $client = $_SESSION['client'];
 $username = $client['client_username'];

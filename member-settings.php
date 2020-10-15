@@ -16,10 +16,10 @@
 <script>
 	'use strict';
 
-	function validate_password() {
-		let pass = document.getElementById("pass"),
-				pass2 = document.getElementById("pass2"),
-				pass_warning = document.getElementById("passwarning");
+	function validate_password(pass, pass2, passwarning) {
+		pass = pass || document.getElementById("pass");
+		pass2 = pass2 || document.getElementById("pass2");
+		pass_warning = || document.getElementById("passwarning");
 
 		if ( pass.value != pass2.value ) {
 			pass_warning.style.visibility = "visible";
@@ -29,8 +29,8 @@
 			return true;
 		}
 	}
-  function validate_form() {
-    let form_update = document.getElementById("form-update");
+  function validate_form(form) {
+    let form_update = form || document.getElementById("form-update");
     // password
     if ( validate_password() === true ) form_update.submit();
   }

@@ -52,7 +52,7 @@
 			  	</button>
 				</p>
 			<?php elseif ($update_successful): ?>
-		    <div class="w3-panel w3-green" id="msgbox">
+		    <div class="w3-panel w3-green msgbox" id="">
 		      <h3 class="w3-center">
 		      	<i class="icon-beenhere"></i>&nbsp;&nbsp;<span>Password updated successfully!</span></h3>
 		    </div> 

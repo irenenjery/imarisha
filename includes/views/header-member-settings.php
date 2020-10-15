@@ -1,6 +1,6 @@
 <header id="member_home" class="w3-display-container w3-content w3-center" style="max-width: 1500px;height: 200px;margin-top: 15px;">
   <?php if ($pass_update === true): ?>
-    <div class="w3-tag w3-green w3-animate-left" id="msgbox">
+    <div class="w3-tag w3-green w3-animate-left msgbox" id="">
       <h3>
         <span>
           <i class="icon-beenhere" style="vertical-align: -3px"></i>
@@ -10,7 +10,7 @@
       </h3>
     </div> 
   <?php elseif ($pass_update === false): ?>
-    <div class="w3-tag w3-red w3-animate-left" id="msgbox">
+    <div class="w3-tag w3-red w3-animate-left msgbox" id="">
       <h3>
         <span><i class="frown-o"></i>&nbsp;Couldn't change password. Please Try again.</span>&nbsp;&nbsp;
        <span onclick="this.parentElement.style.display='none'" class="w3-closebtn">&times;</span> </h3>

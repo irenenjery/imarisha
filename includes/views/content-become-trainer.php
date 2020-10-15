@@ -4,16 +4,16 @@
       <span class="selected_prog w3-padding">IM</span> Trainer Application
     </h2>
 		<?php if ($app_success): ?>
-	    <div class="w3-panel w3-green w3-center" id="msgbox">
+	    <div class="w3-panel w3-green w3-center msgbox" id="">
 	      <h3><span>Application sent successfully!</span></h3>
 	      <p>You will be contacted soon by our team for your appointment.</p>
 	    </div> 
 	  <?php elseif ($app_success === false): ?>
-	    <div class="w3-panel w3-red w3-center" id="msgbox">
+	    <div class="w3-panel w3-red w3-center msgbox" id="">
 	      <h3><span>Something went wrong, please try again later!</span></h3>
 	    </div> 
 	  <?php elseif ($app_exists): ?>
-	    <div class="w3-panel w3-center" id="msgbox">
+	    <div class="w3-panel w3-center msgbox" id="">
 	      <h3><span>Application already sent!</span></h3>
 	    </div>
 		<?php endif ?>

@@ -364,7 +364,7 @@ function getTimetable($conn, $condition=1)
 /**
  Returns a two-dimensional associative array of exercises filtered by a specified condition.
  
- The outer array is indexed by `prog_id` and each indexed member is an
+ The outer array is indexed by `ex_id` and each indexed member is an
  associative array, $ex, containing:
  - $ex['ex_id']
  - $ex['ex_title']
@@ -393,10 +393,10 @@ function getExercises($conn, $condition=1)
  Each member represents a day of the week,  
  	$days = array('mon', 'tue', 'wed', 'thur', 'fri', 'sat', 'sun')
  and each day contains the workout routine scheduled for that day:
- - $wp[$day][$index]['wp_id']
- - $wp[$day][$index]['wp_day'], eg $wp['mon'][0]['wp_day'] == 'mon'
- - $wp[$day][$index]['ex_id'], the exercise id of an exercise
- - $wp[$day][$index]['wp_ex_details'], details on the specific workout exercise
+ - $wp[$day]['wp_id']['wp_id']
+ - $wp[$day]['wp_id']['wp_day'], eg $wp['mon'][0]['wp_day'] == 'mon'
+ - $wp[$day]['wp_id']['ex_id'], the exercise id of an exercise
+ - $wp[$day]['wp_id']['wp_ex_details'], details on the specific workout exercise
  */
 function getWorkoutplan($conn, $prog_id, $condition=1)
 {
@@ -415,9 +415,10 @@ function getWorkoutplan($conn, $prog_id, $condition=1)
 
  	if ($result && mysqli_num_rows($result) > 0) {
     while($row = mysqli_fetch_assoc($result)) {
+    	$wp_id = $row['wp_id'];
     	$wp_day = $row['wp_day'];
 
-			array_push($wp_data[$wp_day], $row);
+			$wp_data[$wp_day][$wp_id] = $row;
 		}
 	}
 	return $wp_data;
